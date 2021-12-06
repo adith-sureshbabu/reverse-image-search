@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reverse Image Search - Find Similar Images</title>
+    <link rel="icon" href="/images/logo.png" type="image/png" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
+    <script src="app.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <section class="part_0">
+        <p class="title text_center">Reverse Image Search</p>
+        <p class="description text_center">
+          You can search for images by Uploading an Image or Pasting any Image URL or Typing any Keywords related to the
+          images you want to explore.
+        </p>
+      </section>
+      <section class="part_1">
+        <div
+          class="drag_zone"
+          ondragover="onDragover(event)"
+          ondrop="onDrop(event)"
+          ondragleave="onDragleave(event)"
+          ondragenter="onDragenter(event)"
+        >
+          <div class="center_content f_col" style="margin-bottom: 10px">
+            <img src="img/dragUpIcon.svg" alt="drop photo" style="width: 70px; height: 55px" />
+            <p class="text_bl text_center">Drop image to search</p>
+            <p class="text_bs text_center">or upload image using the button below</p>
+          </div>
+          <div
+            class="icon_button button_r center_content"
+            style="max-width: 128px"
+            onclick="document.querySelector('#imgInput').click();"
+          >
+            <i class="fas fa-paperclip"></i>
+            <input class="button_re" type="button" value="Upload" />
+            <input
+              type="file"
+              id="imgInput"
+              name="img"
+              style="display: none"
+              accept="image/*"
+              onchange="imgInputChange(this);"
+            />
+          </div>
+        </div>
+        <div class="prev_outer_box">
+          <div class="prev_inner_box">
+            <img class="img_responsive" id="prev_img_box" src="" alt="image-preview" />
+            <div class="cross_img center_content" onclick="closeImage();">
+              <i class="fas fa-times"></i>
+            </div>
+          </div>
+        </div>
+        <div id="file_name" style="word-break: break-all; margin-top: 5px; display: none"></div>
+        <div id="file_size" style="word-break: break-all; margin-top: 5px"></div>
+      </section>
+      <section class="part_1">
+        <div style="margin-bottom: 10px">
+          <p class="text_center text_br">- OR - Paste URL</p>
+          <div class="input_group">
+            <i class="fas fa-link"></i>
+            <input
+              class="txtinput"
+              type="text"
+              name="UrlSearch"
+              id="txtUrlSearch"
+              placeholder="Paste Image URL"
+              onkeydown="clearFields('byUrl')"
+              onchange="clearFields('byUrl')"
+              onpaste="clearFields('byUrl')"
+            />
+          </div>
+        </div>
+        <div style="margin-bottom: 5px">
+          <p class="text_center text_br">- OR - Search By Keyword</p>
+          <input
+            class="txtinput"
+            type="text"
+            name="KeywordSearch"
+            id="txtKeywordSearch"
+            placeholder="Search By Keyword"
+            onkeydown="clearFields('byKeyword')"
+            onchange="clearFields('byKeyword')"
+            onpaste="clearFields('byKeyword')"
+          />
+        </div>
+      </section>
+      <section class="center_content part_1">
+        <input
+          id="btnSearchSimilar"
+          class="button_r"
+          type="submit"
+          value="Search Similar Image"
+          onclick="searchSimilar();"
+        />
+      </section>
+      <section class="part_2">
+        <div class="isr_container">
+          <div class="sr_item">
+            <div class="main_is_result">
+              <div class="icon_svg">
+                <a id="googleUrl" href="#" target="_blank" class="">
+                  <img src="img/Google.svg" alt="Google" />
+                  <div class="button_sm hide_inside_tab">Show Matches</div>
+                  <div class="button_sm hide_outside_tab">Google</div>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="sr_item">
+            <div class="main_is_result">
+              <div class="icon_svg">
+                <a id="bingUrl" href="#" target="_blank">
+                  <img src="img/Bing.svg" alt="Bing" />
+                  <div class="button_sm hide_inside_tab" style="background: #00897b">Show Matches</div>
+                  <div class="button_sm hide_outside_tab" style="background: #00897b">Bing</div>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="sr_item">
+            <div class="main_is_result">
+              <div class="icon_svg">
+                <a id="yandexUrl" href="#" target="_blank">
+                  <img src="img/Yandex.svg" alt="Yandex" />
+                  <div class="button_sm hide_inside_tab" style="background: #e62621">Show Matches</div>
+                  <div class="button_sm hide_outside_tab" style="background: #e62621">Yandex</div>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div id="tineyeBlock" class="sr_item">
+            <div class="main_is_result">
+              <div class="icon_svg">
+                <a id="tineyeUrl" href="#" target="_blank">
+                  <img src="img/tineye.svg" alt="Tineye" />
+                  <div class="button_sm hide_inside_tab" style="background: #61aacb">Show Matches</div>
+                  <div class="button_sm hide_outside_tab" style="background: #61aacb">Tineye</div>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="sr_item">
+            <div class="main_is_result">
+              <div class="icon_svg">
+                <a id="sogouUrl" href="#" target="_blank">
+                  <img src="img/Sogou.svg" alt="Sogou" />
+                  <div class="button_sm hide_inside_tab" style="background: #f74b1a">Show Matches</div>
+                  <div class="button_sm hide_outside_tab" style="background: #f74b1a">Sogou</div>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="sr_item">
+            <div class="main_is_result">
+              <div class="icon_svg">
+                <a id="baiduUrl" href="#" target="_blank">
+                  <img src="img/baidu.svg" alt="Baidu" />
+                  <div class="button_sm hide_inside_tab" style="background: #0062b2">Show Matches</div>
+                  <div class="button_sm hide_outside_tab" style="background: #0062b2">Baidu</div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <input
+          id="btnNewSearch"
+          class="button_r"
+          type="submit"
+          value="Try New Search"
+          style="align-self: center"
+          onclick="newSearch()"
+        />
+      </section>
+    </div>
+  </body>
+</html>
