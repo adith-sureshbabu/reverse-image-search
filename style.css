@@ -14,7 +14,7 @@ body {
 }
 
 body {
-  background: url("/img/bg.jpg") repeat fixed top center;
+  background: url("img/bg.jpg") repeat fixed top center;
 }
 
 .container {
