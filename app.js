@@ -192,26 +192,38 @@ function searchSimilar() {
 }
 
 function uploadImage(file) {
-  var data = new FormData();
-  data.append("auth_token", "3562ece80429b257452186d68be77d5ba6340a5d");
-  data.append("action", "upload");
-  data.append("source", file);
-  data.append("type", "file");
-  data.append("expiration", "P1D");
-  data.append("timestamp", Date.now().toString());
-  fetch("https://imgbb.com/json", {
-    method: "POST",
-    body: data,
-  })
-    .then((response) => response.json())
-    .then((result) => {
-      setupSearchLinks(result.image.display_url, "imagesearch");
-      setPartsDisplay("none", "flex", "block");
-      return;
+  try {
+    document.querySelector(".loader").style.display = "grid";
+    document.querySelector(".container").style.display = "none";
+    var data = new FormData();
+    data.append("auth_token", "3562ece80429b257452186d68be77d5ba6340a5d");
+    data.append("action", "upload");
+    data.append("source", file);
+    data.append("type", "file");
+    data.append("expiration", "P1D");
+    data.append("timestamp", Date.now().toString());
+    fetch("https://imgbb.com/json", {
+      method: "POST",
+      body: data,
     })
-    .catch((err) => {
-      console.log(err);
-    });
+      .then((response) => response.json())
+      .then((result) => {
+        setupSearchLinks(result.image.display_url, "imagesearch");
+        setPartsDisplay("none", "flex", "block");
+        document.querySelector(".loader").style.display = "none";
+        document.querySelector(".container").style.display = "flex";
+        return;
+      })
+      .catch((err) => {
+        console.log(err);
+        document.querySelector(".loader").style.display = "none";
+        document.querySelector(".container").style.display = "flex";
+      });
+  } catch (err) {
+    console.log(err);
+    document.querySelector(".loader").style.display = "none";
+    document.querySelector(".container").style.display = "flex";
+  }
 }
 
 function setupSearchLinks(searchValue, searchType) {

@@ -15,6 +15,7 @@ body {
 
 body {
   background: url("img/bg.jpg") repeat fixed top center;
+  background-color: #1d1d29;
 }
 
 .container {
