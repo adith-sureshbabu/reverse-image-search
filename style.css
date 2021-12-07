@@ -42,6 +42,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 .container > section:nth-child(4) {
@@ -171,8 +172,8 @@ body {
   justify-content: center;
   position: relative;
   margin: 0 auto;
-  width: 180px;
-  height: 180px;
+  width: 250px;
+  height: 250px;
   padding: 10px;
   border: 1px solid #e0e8ef;
   display: none;
@@ -269,6 +270,10 @@ body {
 }
 
 @media (max-width: 768px) {
+  .prev_outer_box {
+    width: 180px;
+    height: 180px;
+  }
   .isr_container {
     flex-direction: column;
     flex-wrap: nowrap;

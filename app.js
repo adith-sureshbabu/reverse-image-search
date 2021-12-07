@@ -10,6 +10,7 @@ var ksYandexUrl = "https://yandex.com/images/search?text=";
 var ksSogouUrl = "https://pic.sogou.com/pics?query=";
 var ksBaiduUrl = "https://image.baidu.com/search/index?tn=baiduimage&word=";
 var imgInputFile = null;
+var validImageTypes = ["image/gif", "image/jpeg", "image/png", "image/svg+xml", "image/bmp", "image/tiff"];
 
 window.addEventListener("load", onLoad);
 window.addEventListener("resize", onResize);
@@ -58,6 +59,7 @@ function resetImage() {
   document.querySelector("#txtKeywordSearch").value = "";
   document.querySelector("#file_name").innerHTML = "";
   document.querySelector("#file_size").innerHTML = "";
+  document.querySelector("#prev_img_box").setAttribute("src", "");
 }
 
 function imgInputChange(event) {
@@ -66,7 +68,6 @@ function imgInputChange(event) {
   var fileExt = fileName.split(".").pop();
   var fileType = file.type;
   var fileSize = file.size;
-  var validImageTypes = ["image/gif", "image/jpeg", "image/png", "image/svg+xml", "image/bmp", "image/tiff"];
   var reader = new FileReader();
   if (validImageTypes.indexOf(fileType) < 0) {
     resetImage();
@@ -95,30 +96,39 @@ function imgInputChange(event) {
 
 function onDrop(e) {
   e.preventDefault();
-  if (e.dataTransfer.items) {
-    if (e.dataTransfer.items.length > 1) {
+  if (e.dataTransfer.files) {
+    if (e.dataTransfer.files.length > 1) {
       querySelectorAll("drag_zone", "backgroundColor", "#dde5eaaa");
       querySelectorAll("drag_zone", "borderColor", "#aaa");
-      var showSFAlert = true;
-      for (let i = 0; i < e.dataTransfer.items.length; i++) {
-        const item = e.dataTransfer.items[i];
-        if (item.kind !== "file") {
-          showSFAlert = false;
-          break;
-        }
-      }
-      if (showSFAlert) {
-        alert("Only single file allowed");
-      }
+      alert("Only single file allowed");
       return false;
-    } else if (e.dataTransfer.items[0].kind === "file") {
-      document.querySelector("#imgInput").files = e.dataTransfer.files;
-      var file = e.dataTransfer.items[0].getAsFile();
+    } else if (e.dataTransfer.files.length === 1 && e.dataTransfer.items.length > 1) {
+      let file = e.dataTransfer.files[0];
+      let getReadableSize = bytesToSize(file.size);
+      if (validImageTypes.indexOf(file.type) < 0) {
+        querySelectorAll("drag_zone", "backgroundColor", "#dde5eaaa");
+        querySelectorAll("drag_zone", "borderColor", "#aaa");
+        alert("Only image types allowed");
+        return false;
+      } else {
+        console.log(`file`, file);
+        file.webUrl = /src="?([^"\s]+)"?\s*/.exec(e.dataTransfer.getData("text/html"))[1];
+        document.querySelector("#prev_img_box").setAttribute("src", file.webUrl);
+        document.querySelector("#txtUrlSearch").value = file.webUrl;
+        document.querySelector("#file_name").innerHTML = file.name;
+        document.querySelector("#file_size").innerHTML = getReadableSize;
+        // document.querySelector("#file_name").style.display = "block";
+        document.querySelector("#file_size").style.display = "block";
+        querySelectorAll("prev_outer_box", "display", "flex");
+        querySelectorAll("drag_zone", "display", "none");
+        return;
+      }
+    } else if (e.dataTransfer.files.length === 1 && e.dataTransfer.items.length === 1) {
+      let file = e.dataTransfer.files[0];
       var fileName = file.name;
       var fileExt = fileName.split(".").pop();
       var fileType = file.type;
       var fileSize = file.size;
-      var validImageTypes = ["image/gif", "image/jpeg", "image/png", "image/svg+xml", "image/bmp", "image/tiff"];
       var reader = new FileReader();
       if (validImageTypes.indexOf(fileType) < 0) {
         resetImage();
@@ -133,7 +143,8 @@ function onDrop(e) {
         alert("File size too big, max limit is 20MB");
         return false;
       } else {
-        var getReadableSize = bytesToSize(fileSize);
+        document.querySelector("#imgInput").files = e.dataTransfer.files;
+        let getReadableSize = bytesToSize(fileSize);
         document.querySelector("#txtUrlSearch").value = "";
         document.querySelector("#txtKeywordSearch").value = "";
         document.querySelector("#file_name").innerHTML = fileName;
@@ -147,6 +158,9 @@ function onDrop(e) {
         };
         reader.readAsDataURL(file);
       }
+    } else {
+      querySelectorAll("drag_zone", "backgroundColor", "#dde5eaaa");
+      querySelectorAll("drag_zone", "borderColor", "#aaa");
     }
   }
 }
@@ -183,18 +197,20 @@ function searchSimilar() {
   var previewImage = document.querySelector("#prev_img_box").getAttribute("src");
   var urlValue = document.querySelector("#txtUrlSearch").value;
   var keywordValue = document.querySelector("#txtKeywordSearch").value;
-  if (previewImage && !imgInputFile) {
-    imgInputFile = getImgInputFile();
-  }
   if (previewImage || urlValue || keywordValue) {
-    if (previewImage) {
-      uploadImage(imgInputFile);
-    } else if (urlValue) {
+    if (urlValue) {
       setupSearchLinks(urlValue, "imagesearch");
       setPartsDisplay("none", "flex", "block");
     } else if (keywordValue) {
       setupSearchLinks(keywordValue, "keywordsearch");
       setPartsDisplay("none", "flex", "none");
+    } else if (previewImage) {
+      if (!imgInputFile) {
+        imgInputFile = getImgInputFile();
+        uploadImage(imgInputFile);
+      } else {
+        uploadImage(imgInputFile);
+      }
     }
   } else {
     alert("Upload an image or paste any image url or type any keyword to start searching!");
@@ -312,3 +328,31 @@ function resetSRItemsSize() {
   }
   return;
 }
+
+function respondToVisibility(element, callback) {
+  var options = {
+    root: document.documentElement,
+  };
+
+  var observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      callback(entry.intersectionRatio > 0);
+    });
+  }, options);
+
+  observer.observe(element);
+}
+
+document.addEventListener("DOMContentLoaded", function (event) {
+  try {
+    respondToVisibility(document.querySelector(".prev_outer_box"), (visible) => {
+      if (visible) {
+        document.querySelector("#urlkeyword").style.display = "none";
+      } else {
+        document.querySelector("#urlkeyword").style.display = "flex";
+      }
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
