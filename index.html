@@ -45,7 +45,12 @@
           ondragenter="onDragenter(event)"
         >
           <div class="center_content f_col" style="margin-bottom: 10px">
-            <img src="img/dragUpIcon.svg" alt="drop photo" style="width: 70px; height: 55px" />
+            <img
+              src="img/dragUpIcon.svg"
+              alt="drop-photo"
+              style="width: 70px; height: 55px"
+              onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false"
+            />
             <p class="text_bl text_center">Drop image to search</p>
             <p class="text_bs text_center">or upload image using the button below</p>
           </div>
