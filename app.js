@@ -193,11 +193,13 @@ function searchSimilar() {
 
 function uploadImage(file) {
   var data = new FormData();
-  data.append("key", "6d207e02198a847aa98d0a2a901485a5");
+  data.append("auth_token", "3562ece80429b257452186d68be77d5ba6340a5d");
   data.append("action", "upload");
   data.append("source", file);
-  data.append("format", "json");
-  fetch("https://freeimage.host/api/1/upload", {
+  data.append("type", "file");
+  data.append("expiration", "P1D");
+  data.append("timestamp", Date.now().toString());
+  fetch("https://imgbb.com/json", {
     method: "POST",
     body: data,
   })
