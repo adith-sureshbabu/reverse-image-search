@@ -111,7 +111,6 @@ function onDrop(e) {
         alert("Only image types allowed");
         return false;
       } else {
-        console.log(`file`, file);
         file.webUrl = /src="?([^"\s]+)"?\s*/.exec(e.dataTransfer.getData("text/html"))[1];
         document.querySelector("#prev_img_box").setAttribute("src", file.webUrl);
         document.querySelector("#txtUrlSearch").value = file.webUrl;
@@ -311,7 +310,7 @@ function resetSRItemsSize() {
   var sr_item = document.querySelectorAll(".sr_item");
   var visible_sr_item_count = 0;
   for (let i = 0; i < sr_item.length; i++) {
-    var sr_item_display = sr_item[i].style.display
+    let sr_item_display = sr_item[i].style.display
       ? sr_item[i].style.display
       : getComputedStyle(sr_item[i], null).display;
     if (sr_item_display !== "none") {
@@ -346,9 +345,12 @@ function respondToVisibility(element, callback) {
 document.addEventListener("DOMContentLoaded", function (event) {
   try {
     respondToVisibility(document.querySelector(".prev_outer_box"), (visible) => {
+      let part_2Display = document.querySelector(".part_2").style.display
+        ? document.querySelector(".part_2").style.display
+        : getComputedStyle(document.querySelector(".part_2"), null).display;
       if (visible) {
         document.querySelector("#urlkeyword").style.display = "none";
-      } else {
+      } else if (!visible && part_2Display === "none") {
         document.querySelector("#urlkeyword").style.display = "flex";
       }
     });
