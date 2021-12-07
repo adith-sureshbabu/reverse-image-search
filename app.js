@@ -99,7 +99,17 @@ function onDrop(e) {
     if (e.dataTransfer.items.length > 1) {
       querySelectorAll("drag_zone", "backgroundColor", "#dde5eaaa");
       querySelectorAll("drag_zone", "borderColor", "#aaa");
-      alert("Only single file allowed");
+      var showSFAlert = true;
+      for (let i = 0; i < e.dataTransfer.items.length; i++) {
+        const item = e.dataTransfer.items[i];
+        if (item.kind !== "file") {
+          showSFAlert = false;
+          break;
+        }
+      }
+      if (showSFAlert) {
+        alert("Only single file allowed");
+      }
       return false;
     } else if (e.dataTransfer.items[0].kind === "file") {
       document.querySelector("#imgInput").files = e.dataTransfer.files;
