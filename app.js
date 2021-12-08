@@ -11,6 +11,7 @@ var ksSogouUrl = "https://pic.sogou.com/pics?query=";
 var ksBaiduUrl = "https://image.baidu.com/search/index?tn=baiduimage&word=";
 var imgInputFile = null;
 var validImageTypes = ["image/gif", "image/jpeg", "image/png", "image/svg+xml", "image/bmp", "image/tiff"];
+var validImageExtn = ["gif", "jpg", "png", "svg", "bmp", "tiff"];
 
 window.addEventListener("load", onLoad);
 window.addEventListener("resize", onResize);
@@ -239,6 +240,16 @@ function generateRandomString(strLen = 5) {
   return randomString;
 }
 
+function urlToFile(url, filename, mimeType) {
+  return fetch(url)
+    .then(function (res) {
+      return res.arrayBuffer();
+    })
+    .then(function (buf) {
+      return new File([buf], filename, { type: mimeType });
+    });
+}
+
 function searchSimilar() {
   var previewImage = document.querySelector("#prev_img_box").getAttribute("src");
   var urlValue = document.querySelector("#txtUrlSearch").value;
@@ -250,7 +261,16 @@ function searchSimilar() {
           .then((result) => {
             if (result) {
               imgInputFile = getImgInputFile();
-              uploadImage(imgInputFile);
+              if (imgInputFile) {
+                uploadImage(imgInputFile);
+              } else {
+                let mimeType = urlValue.split(":")[1].split(";")[0];
+                let mimeIndex = validImageTypes.indexOf(mimeType);
+                let fileExt = validImageExtn[mimeIndex];
+                urlToFile(urlValue, `${generateRandomString(8)}.${fileExt}`, mimeType).then(function (file) {
+                  uploadImage(file);
+                });
+              }
               return;
             } else {
               alert("File is Invalid or Unsupported");
