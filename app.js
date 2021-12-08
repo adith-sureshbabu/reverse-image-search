@@ -112,6 +112,7 @@ function onDrop(e) {
         return false;
       } else {
         file.webUrl = /src="?([^"\s]+)"?\s*/.exec(e.dataTransfer.getData("text/html"))[1];
+        document.querySelector("#imgInput").files = e.dataTransfer.files;
         document.querySelector("#prev_img_box").setAttribute("src", file.webUrl);
         document.querySelector("#txtUrlSearch").value = file.webUrl;
         document.querySelector("#file_name").innerHTML = file.name;
@@ -192,14 +193,91 @@ function closeImage() {
   querySelectorAll("prev_outer_box", "display", "none");
 }
 
+async function isValidUrlImage(urlImageStr = "") {
+  let image = new Image();
+  image.src = urlImageStr;
+  return await new Promise((resolve) => {
+    image.onload = function () {
+      if (image.height === 0 || image.width === 0) {
+        resolve(false);
+        return;
+      }
+      resolve(true);
+    };
+    image.onerror = () => {
+      resolve(false);
+    };
+  });
+}
+
+function getExtensionFromUrl(url) {
+  return url.split(/[#?]/)[0].split(".").pop().trim();
+}
+
+function validateUrl(url = "") {
+  try {
+    let urlObj = new URL(url);
+    let urlRgx =
+      /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i;
+    if (!urlRgx.test(url)) {
+      throw new Error("Invalid URL");
+    }
+    return true;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+}
+
+function generateRandomString(strLen = 5) {
+  let charSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let randomString = Array.apply(null, Array(strLen))
+    .map(() => {
+      return charSet.charAt(Math.floor(Math.random() * charSet.length));
+    })
+    .join("");
+  return randomString;
+}
+
 function searchSimilar() {
   var previewImage = document.querySelector("#prev_img_box").getAttribute("src");
   var urlValue = document.querySelector("#txtUrlSearch").value;
   var keywordValue = document.querySelector("#txtKeywordSearch").value;
   if (previewImage || urlValue || keywordValue) {
     if (urlValue) {
-      setupSearchLinks(urlValue, "imagesearch");
-      setPartsDisplay("none", "flex", "block");
+      if (urlValue.startsWith("data:")) {
+        isValidUrlImage(urlValue)
+          .then((result) => {
+            if (result) {
+              imgInputFile = getImgInputFile();
+              uploadImage(imgInputFile);
+              return;
+            } else {
+              alert("File is Invalid or Unsupported");
+              return;
+            }
+          })
+          .catch((e) => console.log(e));
+        return;
+      } else {
+        if (validateUrl(urlValue)) {
+          isValidUrlImage(urlValue)
+            .then((result) => {
+              if (result) {
+                setupSearchLinks(urlValue, "imagesearch");
+                setPartsDisplay("none", "flex", "block");
+                return;
+              } else {
+                alert("File is Invalid or Unsupported");
+                return;
+              }
+            })
+            .catch((e) => console.log(e));
+        } else {
+          alert("Invalid URL");
+          return;
+        }
+      }
     } else if (keywordValue) {
       setupSearchLinks(keywordValue, "keywordsearch");
       setPartsDisplay("none", "flex", "none");
