@@ -29,7 +29,7 @@ body {
 
 body {
   background: url("../images/bg.jpg") repeat fixed top center;
-  background-color: #1d1d29;
+  background-color: #005849;
 }
 
 .container {
@@ -49,6 +49,10 @@ body {
   border-radius: 5px;
   display: flex;
   flex-direction: column;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
+  -o-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
 }
 
 .container > section:nth-child(2) {
@@ -61,6 +65,10 @@ body {
 
 .container > section:nth-child(4) {
   background: none;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  -o-box-shadow: none;
 }
 
 .container > section:last-child {
