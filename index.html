@@ -6,15 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reverse Image Search - Find Similar Images</title>
     <link rel="icon" href="/images/logo.png" type="image/png" />
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="loader.css" />
-    <link
-      rel="stylesheet"
-      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
-      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
-      crossorigin="anonymous"
-    />
-    <script src="app.js"></script>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/loader.css" />
+    <link rel="stylesheet" href="/css/fontello.css" />
+    <link rel="stylesheet" href="/css/fontello-ie7.css" />
+    <link rel="stylesheet" href="/css/fontello-embedded.css" />
+    <script src="/js/app.js"></script>
   </head>
   <body>
     <div class="loader">
@@ -60,7 +57,7 @@
             style="max-width: 128px"
             onclick="document.querySelector('#imgInput').click();"
           >
-            <i class="fas fa-paperclip"></i>
+            <i class="icon-attach" style="font-size: 12px"></i>
             <input class="button_re" type="button" value="Upload" />
             <input
               type="file"
@@ -76,7 +73,7 @@
           <div class="prev_inner_box">
             <img class="img_responsive" id="prev_img_box" src="" alt="image-preview" />
             <div class="cross_img center_content" onclick="closeImage();">
-              <i class="fas fa-times"></i>
+              <i class="icon-cancel" style="font-size: 11px"></i>
             </div>
           </div>
         </div>
@@ -87,7 +84,7 @@
         <div style="margin-bottom: 10px">
           <p class="text_center text_br">- OR - Paste URL</p>
           <div class="input_group">
-            <i class="fas fa-link"></i>
+            <i class="icon-link" style="font-size: 18px"></i>
             <input
               class="txtinput"
               type="url"
@@ -119,7 +116,7 @@
           id="btnSearchSimilar"
           class="button_r"
           type="submit"
-          value="Search Similar Image"
+          value="Find Similar Image&ensp;&#xe804;"
           onclick="searchSimilar();"
         />
       </section>
