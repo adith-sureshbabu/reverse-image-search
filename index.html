@@ -50,6 +50,7 @@
               alt="drop-photo"
               style="width: 70px; height: 55px"
               onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false"
+              oncontextmenu="return false;"
             />
             <p class="text_bl text_center">Drop image to search</p>
             <p class="text_bs text_center">or upload image using the button below</p>
@@ -128,9 +129,11 @@
             <div class="main_is_result">
               <div class="icon_svg">
                 <a id="googleUrl" href="#" target="_blank" class="">
-                  <img src="img/Google.svg" alt="Google" />
-                  <div class="button_sm hide_inside_tab">Show Matches</div>
-                  <div class="button_sm hide_outside_tab">Google</div>
+                  <div class="img_overlay_container">
+                    <img src="img/Google.svg" alt="Google" />
+                  </div>
+                  <div class="button_sm hide_inside_tab" style="background: #0373dd">Show Matches</div>
+                  <div class="button_sm hide_outside_tab" style="background: #0373dd">Google</div>
                 </a>
               </div>
             </div>
@@ -139,7 +142,9 @@
             <div class="main_is_result">
               <div class="icon_svg">
                 <a id="bingUrl" href="#" target="_blank">
-                  <img src="img/Bing.svg" alt="Bing" />
+                  <div class="img_overlay_container">
+                    <img src="img/Bing.svg" alt="Bing" />
+                  </div>
                   <div class="button_sm hide_inside_tab" style="background: #00897b">Show Matches</div>
                   <div class="button_sm hide_outside_tab" style="background: #00897b">Bing</div>
                 </a>
@@ -150,7 +155,9 @@
             <div class="main_is_result">
               <div class="icon_svg">
                 <a id="yandexUrl" href="#" target="_blank">
-                  <img src="img/Yandex.svg" alt="Yandex" />
+                  <div class="img_overlay_container">
+                    <img src="img/Yandex.svg" alt="Yandex" />
+                  </div>
                   <div class="button_sm hide_inside_tab" style="background: #e62621">Show Matches</div>
                   <div class="button_sm hide_outside_tab" style="background: #e62621">Yandex</div>
                 </a>
@@ -161,7 +168,9 @@
             <div class="main_is_result">
               <div class="icon_svg">
                 <a id="tineyeUrl" href="#" target="_blank">
-                  <img src="img/tineye.svg" alt="Tineye" />
+                  <div class="img_overlay_container">
+                    <img src="img/tineye.svg" alt="Tineye" />
+                  </div>
                   <div class="button_sm hide_inside_tab" style="background: #61aacb">Show Matches</div>
                   <div class="button_sm hide_outside_tab" style="background: #61aacb">Tineye</div>
                 </a>
@@ -172,7 +181,9 @@
             <div class="main_is_result">
               <div class="icon_svg">
                 <a id="sogouUrl" href="#" target="_blank">
-                  <img src="img/Sogou.svg" alt="Sogou" />
+                  <div class="img_overlay_container">
+                    <img src="img/Sogou.svg" alt="Sogou" />
+                  </div>
                   <div class="button_sm hide_inside_tab" style="background: #f74b1a">Show Matches</div>
                   <div class="button_sm hide_outside_tab" style="background: #f74b1a">Sogou</div>
                 </a>
@@ -183,7 +194,9 @@
             <div class="main_is_result">
               <div class="icon_svg">
                 <a id="baiduUrl" href="#" target="_blank">
-                  <img src="img/baidu.svg" alt="Baidu" />
+                  <div class="img_overlay_container">
+                    <img src="img/baidu.svg" alt="Baidu" />
+                  </div>
                   <div class="button_sm hide_inside_tab" style="background: #0062b2">Show Matches</div>
                   <div class="button_sm hide_outside_tab" style="background: #0062b2">Baidu</div>
                 </a>
