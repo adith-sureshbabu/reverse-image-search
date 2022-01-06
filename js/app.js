@@ -78,8 +78,8 @@ function resetImage() {
   document.querySelector("#imgInput").value = "";
   document.querySelector("#txtUrlSearch").value = "";
   document.querySelector("#txtKeywordSearch").value = "";
-  document.querySelector("#file_name").innerHTML = "";
-  document.querySelector("#file_size").innerHTML = "";
+  document.querySelector("#file_name").innerText = "";
+  document.querySelector("#file_size").innerText = "";
   document.querySelector("#prev_img_box").setAttribute("src", "");
 }
 
@@ -102,8 +102,8 @@ function imgInputChange(event) {
     var getReadableSize = bytesToSize(fileSize);
     document.querySelector("#txtUrlSearch").value = "";
     document.querySelector("#txtKeywordSearch").value = "";
-    document.querySelector("#file_name").innerHTML = fileName;
-    document.querySelector("#file_size").innerHTML = getReadableSize;
+    document.querySelector("#file_name").innerText = fileName;
+    document.querySelector("#file_size").innerText = getReadableSize;
     // document.querySelector("#file_name").style.display = "block";
     document.querySelector("#file_size").style.display = "block";
     reader.onload = function (rdr) {
@@ -136,8 +136,8 @@ function onDrop(e) {
         document.querySelector("#imgInput").files = e.dataTransfer.files;
         document.querySelector("#prev_img_box").setAttribute("src", file.webUrl);
         document.querySelector("#txtUrlSearch").value = file.webUrl;
-        document.querySelector("#file_name").innerHTML = file.name;
-        document.querySelector("#file_size").innerHTML = getReadableSize;
+        document.querySelector("#file_name").innerText = file.name;
+        document.querySelector("#file_size").innerText = getReadableSize;
         // document.querySelector("#file_name").style.display = "block";
         document.querySelector("#file_size").style.display = "block";
         querySelectorAll("prev_outer_box", "display", "flex");
@@ -168,8 +168,8 @@ function onDrop(e) {
         let getReadableSize = bytesToSize(fileSize);
         document.querySelector("#txtUrlSearch").value = "";
         document.querySelector("#txtKeywordSearch").value = "";
-        document.querySelector("#file_name").innerHTML = fileName;
-        document.querySelector("#file_size").innerHTML = getReadableSize;
+        document.querySelector("#file_name").innerText = fileName;
+        document.querySelector("#file_size").innerText = getReadableSize;
         // document.querySelector("#file_name").style.display = "block";
         document.querySelector("#file_size").style.display = "block";
         reader.onload = function (rdr) {
@@ -404,8 +404,8 @@ function newSearch() {
   document.querySelector("#imgInput").value = "";
   document.querySelector("#txtUrlSearch").value = "";
   document.querySelector("#txtKeywordSearch").value = "";
-  document.querySelector("#file_name").innerHTML = "";
-  document.querySelector("#file_size").innerHTML = "";
+  document.querySelector("#file_name").innerText = "";
+  document.querySelector("#file_size").innerText = "";
   document.querySelector("#file_name").style.display = "none";
   document.querySelector("#file_size").style.display = "none";
   document.querySelector("#googleUrl").setAttribute("href", "#");
